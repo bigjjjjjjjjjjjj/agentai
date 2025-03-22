@@ -1,112 +1,110 @@
-# agentai
-Reflexive Web Agent for Automated Study Plan Generation
-Overview
-This project implements a Reflexive Web Agent that automates the generation of a 5-week study plan for programming courses. The agent uses Selenium to scrape YouTube for relevant programming courses based on a user-defined subject and leverages a large language model (LLM) from Hugging Face to create a detailed, personalized study plan. This tool is designed to assist learners by providing a structured learning path with weekly tasks, objectives, and resources.
+Sure! Here's the content formatted in markdown for use on GitHub:
 
-Features
-Web Scraping: Scrapes YouTube for programming course videos using Selenium.
-Natural Language Processing: Generates study plans using the Hugging Face text-generation pipeline with the google/gemma-2b-it model.
-Automation: Automates browser interactions with anti-bot detection avoidance.
-Setup Instructions
-Prerequisites
-Python: Version 3.8 or higher
-Google Chrome: Installed on your system
-ChromeDriver: Must match your Chrome version
-CUDA-enabled GPU (optional): For faster model inference with the LLM
-Installation
-Clone the Repository:
-bash
+markdown
 
-Collapse
 
-Wrap
+# Reflexive Web Agent for Automated Study Plan Generation
 
-Copy
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+## Overview
+This project implements a Reflexive Web Agent that automates the creation of a 5-week study plan for programming courses. The agent uses Selenium to scrape YouTube for relevant programming course videos based on a user-defined subject and integrates a large language model (LLM) from Hugging Face to generate a detailed, personalized study plan. This tool aims to assist learners by providing a structured learning path with weekly tasks, objectives, and resources.
+
+## Features
+- **Web Scraping:** Uses Selenium to fetch programming course videos from YouTube.
+- **Natural Language Processing:** Employs the Hugging Face text-generation pipeline with the `google/gemma-2b-it` model to create study plans.
+- **Automation:** Handles browser interactions with anti-bot detection measures.
+
+## Setup Instructions
+
+### Prerequisites
+- **Python:** Version 3.8 or higher
+- **Google Chrome:** Installed on your system
+- **ChromeDriver:** Must match your Chrome version
+- **CUDA-enabled GPU (optional):** For accelerated LLM inference
+
+### Installation
+
+1. **Clone the Repository:**
+   ```
+   git clone https://github.com/yourusername/your-repo-name.git
+   cd your-repo-name
 Install Python Dependencies:
-bash
 
-Collapse
 
-Wrap
 
-Copy
+
 pip install selenium transformers torch huggingface_hub beautifulsoup4
 Install ChromeDriver:
+
 Download ChromeDriver from the official site.
-Ensure the version matches your installed Google Chrome version.
-Add chromedriver to your system’s PATH or specify its path in the webdriver.Chrome() call in the code.
+Ensure it matches your Google Chrome version.
+Add chromedriver to your system PATH or specify its location in the webdriver.Chrome() call.
 Hugging Face Authentication:
-Obtain a Hugging Face API token from Hugging Face.
-Replace the placeholder token "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" in the code with your own token.
+
+Get an API token from Hugging Face.
+Replace "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" in the code with your token.
 Usage
 Run the Script:
-bash
 
-Collapse
 
-Wrap
 
-Copy
+
 python study_plan_generator.py
-By default, it generates a study plan for "Python". Modify the subject in the create_study_plan_with_courses() call to change it.
-Customize the Subject:
-Edit the script to generate a plan for a different subject, e.g., "JavaScript":
-python
+By default, it generates a plan for "Python". Modify the subject in create_study_plan_with_courses() to customize it.
 
-Collapse
+Customize the Subject: Change the subject in the script, e.g., for "JavaScript":
 
-Wrap
 
-Copy
+
+
 create_study_plan_with_courses("JavaScript")
 Output:
-The script outputs:
-A list of YouTube courses (titles and URLs).
-A 5-week study plan with weekly tasks, objectives, and suggested resources.
+The script produces:
+
+A list of YouTube course titles and URLs.
+A 5-week study plan with tasks, objectives, and resources.
 Implementation Details
 1. Web Scraping with Selenium
 Function: get_courses(subject)
-Purpose: Fetches a list of programming courses from YouTube based on the subject.
+Purpose: Retrieves programming courses from YouTube based on the subject.
+
 Details:
-Uses Selenium with a headless Chrome browser to navigate to https://www.youtube.com/results?search_query={subject}+programming+courses.
-Waits 5 seconds (time.sleep(5)) for the page to load.
-Parses the HTML with BeautifulSoup to extract video titles and URLs from <a id="video-title"> tags.
-Returns a list of tuples: (title, url).
+
+Navigates to https://www.youtube.com/results?search_query={subject}+programming+courses using a headless Chrome browser.
+Waits 5 seconds (time.sleep(5)) for content to load.
+Parses HTML with BeautifulSoup to extract video titles and URLs from <a id="video-title"> tags.
+Returns a list of (title, url) tuples.
 2. Study Plan Generation with Hugging Face LLM
 Function: generate_study_plan(subject, courses)
-Purpose: Creates a 5-week study plan using the scraped courses and the LLM.
+Purpose: Generates a 5-week study plan using scraped courses and the LLM.
+
 Details:
-Constructs a prompt with the subject and a formatted list of course titles and URLs.
-Uses the text-generation pipeline with the google/gemma-2b-it model, running on CUDA if available.
-Limits output to 768 tokens (max_new_tokens=256*3) for detailed yet concise plans.
-Returns the generated text stripped of excess whitespace.
+
+Builds a prompt with the subject and course list.
+Uses the google/gemma-2b-it model via the text-generation pipeline, leveraging CUDA if available.
+Limits output to 768 tokens (max_new_tokens=256*3) for concise yet detailed plans.
 3. Integration
 Function: create_study_plan_with_courses(subject)
-Purpose: Combines web scraping and LLM generation into a single workflow.
+Purpose: Combines scraping and plan generation into one workflow.
+
 Details:
-Calls get_courses(subject) to retrieve courses.
-Passes the results to generate_study_plan(subject, courses) to create the study plan.
-Prints the available courses and the generated study plan.
+
+Calls get_courses(subject) to fetch courses.
+Passes results to generate_study_plan(subject, courses) for plan creation.
+Displays courses and the study plan.
 4. ChromeDriver Configuration
 Function: driver_config()
-Purpose: Sets up Selenium’s ChromeDriver with anti-detection and performance options.
+Purpose: Configures Selenium’s ChromeDriver for optimal performance and stealth.
+
 Details:
+
 Options:
-disable-blink-features=AutomationControlled: Prevents bot detection.
---headless: Runs without a visible browser window.
---disable-gpu, --disable-extensions, --disable-infobars: Optimizes performance.
-Proxy settings: Ensures direct connection without interference.
-Returns a configured webdriver.Chrome instance.
+disable-blink-features=AutomationControlled: Avoids bot detection.
+--headless: Runs browser in the background.
+--disable-gpu, --disable-extensions, --disable-infobars: Enhances efficiency.
 Code Structure
 python
 
-Collapse
 
-Wrap
-
-Copy
 import torch
 from transformers import pipeline
 from selenium import webdriver
@@ -128,40 +126,55 @@ def get_courses(subject): ...
 def generate_study_plan(subject, courses): ...
 
 # Main Workflow
-def create_study_plan_with_courses(subject): ...
+Week 1:
 
-# Run Example
-create_study_plan_with_courses("Python")
-Example Output
-For the subject "Python":
+Introduction to Python
 
-text
+Setting up the Python environment
 
-Collapse
+Basic syntax and data types
 
-Wrap
+Variables and operators
 
-Copy
-Available Courses:
-Title: Python for Beginners - URL: https://www.youtube.com/watch?v=abc123
-Title: Advanced Python Programming - URL: https://www.youtube.com/watch?v=def456
+Input and output
 
-Suggested Study Plan:
-Week 1: Introduction to Python
-- Watch "Python for Beginners" (URL: https://www.youtube.com/watch?v=abc123)
-- Tasks: Learn basic syntax, variables, and data types.
-- Objective: Build a foundation in Python.
+Resources:
 
-Week 2: Intermediate Concepts
-- Watch "Advanced Python Programming" (URL: https://www.youtube.com/watch?v=def456)
-- Tasks: Explore functions and modules.
-- Objective: Understand code organization.
-...
-Notes
-Model Limitations: The google/gemma-2b-it model may produce inconsistent results. Consider upgrading to a larger model for better quality.
-Scraping Reliability: YouTube’s layout may change, requiring updates to the BeautifulSoup parsing logic.
-Performance: Adjust time.sleep(5) if dynamic content fails to load in headless mode.
-License
-This project is licensed under the MIT License.
+Title: Python Full Course for Beginners
 
-This README.md provides a comprehensive guide to setting up and understanding your code, tailored to the provided implementation. Save it as README.md in your project directory.
+Title: Learn Python - Full Course for Beginners [Tutorial]
+
+Timeline:
+
+Week 1: 5 hours
+
+Task 1: Create a Python environment and practice basic commands.
+
+Task 2: Learn about variables and data types.
+
+Task 3: Practice using variables and operators.
+
+Learning Objectives:
+
+Understand the basics of Python programming.
+
+Use variables and operators to store and manipulate data.
+
+Week 2:
+
+Control flow statements
+
+If statements
+
+While loops
+
+Practice using control flow statements.
+
+Resources:
+
+Title: Python Full Course for Beginners
+
+Title: Learn Python With 5 Projects - From Beginner to Advanced
+
+Timeline:
+
